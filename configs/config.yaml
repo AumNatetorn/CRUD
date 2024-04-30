@@ -1,0 +1,19 @@
+app: 
+  name: CRUD
+  timeout: 10s
+  port: 1323
+
+mysql:
+ database: customer
+ timeout: 10s
+ max:
+  idle_conns: 50
+  open_conns: 50
+  lifetime: 30m
+
+
+secrets:
+  mysql:
+    host: "localhost:3306"
+    username: "root"
+    password: "1234"
