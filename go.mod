@@ -3,6 +3,7 @@ module CRUD
 go 1.22.2
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/gofiber/fiber/v2 v2.52.4
 	github.com/pkg/errors v0.9.1

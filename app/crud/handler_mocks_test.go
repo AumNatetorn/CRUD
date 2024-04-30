@@ -54,10 +54,10 @@ func (mr *MockCustomerStorageMockRecorder) DeleteOne(ctx, id any) *gomock.Call {
 }
 
 // FindOne mocks base method.
-func (m *MockCustomerStorage) FindOne(ctx context.Context, id int) (*Request, error) {
+func (m *MockCustomerStorage) FindOne(ctx context.Context, id int) (*Customers, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindOne", ctx, id)
-	ret0, _ := ret[0].(*Request)
+	ret0, _ := ret[0].(*Customers)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -69,7 +69,7 @@ func (mr *MockCustomerStorageMockRecorder) FindOne(ctx, id any) *gomock.Call {
 }
 
 // InsertOne mocks base method.
-func (m *MockCustomerStorage) InsertOne(ctx context.Context, req Request) error {
+func (m *MockCustomerStorage) InsertOne(ctx context.Context, req Customers) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "InsertOne", ctx, req)
 	ret0, _ := ret[0].(error)
@@ -83,7 +83,7 @@ func (mr *MockCustomerStorageMockRecorder) InsertOne(ctx, req any) *gomock.Call 
 }
 
 // UpdateOne mocks base method.
-func (m *MockCustomerStorage) UpdateOne(ctx context.Context, req Request) error {
+func (m *MockCustomerStorage) UpdateOne(ctx context.Context, req Customers) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateOne", ctx, req)
 	ret0, _ := ret[0].(error)

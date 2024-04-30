@@ -11,28 +11,27 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type Request struct {
-	ID        int    `json:"id" gorm:"column:id"`
-	AccountID int    `json:"accountID" gorm:"column:account_id"`
-	Name      string `json:"name" gorm:"column:name"`
-	Age       int    `json:"age" gorm:"column:age"`
+type Customers struct {
+	ID   int    `json:"id" gorm:"column:id"`
+	Name string `json:"name" gorm:"column:name"`
+	Age  int    `json:"age" gorm:"column:age"`
 }
 
-func (r *Request) TableName() string {
+func (r *Customers) TableName() string {
 	return "profile"
 }
 
 type Response struct {
-	StatusCode int      `json:"statusCode"`
-	Message    string   `json:"message"`
-	Data       *Request `json:"data,omitempty"`
+	StatusCode int        `json:"statusCode"`
+	Message    string     `json:"message"`
+	Data       *Customers `json:"data,omitempty"`
 }
 
 type CustomerStorage interface {
-	InsertOne(ctx context.Context, req Request) error
-	UpdateOne(ctx context.Context, req Request) error
+	InsertOne(ctx context.Context, req Customers) error
+	UpdateOne(ctx context.Context, req Customers) error
 	DeleteOne(ctx context.Context, id int) error
-	FindOne(ctx context.Context, id int) (ent *Request, err error)
+	FindOne(ctx context.Context, id int) (ent *Customers, err error)
 }
 
 type Handler struct {
@@ -44,7 +43,7 @@ func NewHandler(crud CustomerStorage) *Handler {
 }
 
 func (h *Handler) CreateCustomerHandler(c *fiber.Ctx) error {
-	req := Request{}
+	req := Customers{}
 
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(Response{
@@ -68,7 +67,7 @@ func (h *Handler) CreateCustomerHandler(c *fiber.Ctx) error {
 }
 
 func (h *Handler) UpdateCustomerHandler(c *fiber.Ctx) error {
-	req := Request{}
+	req := Customers{}
 
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(Response{
@@ -148,11 +147,10 @@ func (h *Handler) GetCustomerHandler(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(Response{
 		StatusCode: fiber.StatusOK,
 		Message:    "Get Customer Success",
-		Data: &Request{
-			ID:        resp.ID,
-			AccountID: resp.AccountID,
-			Name:      resp.Name,
-			Age:       resp.Age,
+		Data: &Customers{
+			ID:   resp.ID,
+			Name: resp.Name,
+			Age:  resp.Age,
 		},
 	})
 }

@@ -5,29 +5,28 @@ CREATE DATABASE customer
 
 CREATE TABLE profile (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    account_id INT,
     name VARCHAR(255),
     age INT
 );
 
 
 # Curl api Create Customer
-curl -X POST http://localhost:1323/customer \
+curl -X POST http://localhost:1323/customers \
 -H "Content-Type: application/json" \
--d '{"accountID": 123, "name": "natetorntest", "age": 26}'
+-d '{"name": "natetorntest", "age": 26}'
 
 #Curl api Update Customer
-curl -X PUT http://localhost:1323/customer \
+curl -X PUT http://localhost:1323/customers \
 -H "Content-Type: application/json" \
--d '{"id":10,"accountID": 123, "name": "natetorntest", "age": 26}'
+-d '{"id":12,"name": "natetorntest2", "age": 22}'
 
 #Curl api Delete Customer
-curl -X DELETE http://localhost:1323/customer/10 \
+curl -X DELETE http://localhost:1323/customers/12 \
 -H "Content-Type: application/json" \
 -d '{}'
 
 #Curl api Find Customer
-curl -X GET http://localhost:1323/customer/11 \
+curl -X GET http://localhost:1323/customers/13 \
 -H "Content-Type: application/json" \
 -d '{}'
 

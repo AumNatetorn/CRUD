@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	reqBody = `{"id":1,"account_id":1234,"name":"John Doe","age":13}`
+	reqBody = `{"id":1,"name":"John Doe","age":13}`
 )
 
 func TestCreateHandler_Success(t *testing.T) {
@@ -31,9 +31,9 @@ func TestCreateHandler_Success(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Post("/customer", handler.CreateCustomerHandler)
+	app.Post("/customers", handler.CreateCustomerHandler)
 
-	req := httptest.NewRequest(http.MethodPost, "/customer", strings.NewReader(reqBody))
+	req := httptest.NewRequest(http.MethodPost, "/customers", strings.NewReader(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -66,9 +66,9 @@ func TestCreateHandler_Fail(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Post("/customer", handler.CreateCustomerHandler)
+	app.Post("/customers", handler.CreateCustomerHandler)
 
-	req := httptest.NewRequest(http.MethodPost, "/customer", strings.NewReader(reqBody))
+	req := httptest.NewRequest(http.MethodPost, "/customers", strings.NewReader(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -101,9 +101,9 @@ func TestUpdateHandler_Success(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Put("/customer", handler.UpdateCustomerHandler)
+	app.Put("/customers", handler.UpdateCustomerHandler)
 
-	req := httptest.NewRequest(http.MethodPut, "/customer", strings.NewReader(reqBody))
+	req := httptest.NewRequest(http.MethodPut, "/customers", strings.NewReader(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -136,9 +136,9 @@ func TestUpdateHandler_RecordNotFound(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Put("/customer", handler.UpdateCustomerHandler)
+	app.Put("/customers", handler.UpdateCustomerHandler)
 
-	req := httptest.NewRequest(http.MethodPut, "/customer", strings.NewReader(reqBody))
+	req := httptest.NewRequest(http.MethodPut, "/customers", strings.NewReader(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -171,9 +171,9 @@ func TestUpdateHandler_Fail(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Put("/customer", handler.UpdateCustomerHandler)
+	app.Put("/customers", handler.UpdateCustomerHandler)
 
-	req := httptest.NewRequest(http.MethodPut, "/customer", strings.NewReader(reqBody))
+	req := httptest.NewRequest(http.MethodPut, "/customers", strings.NewReader(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -206,9 +206,9 @@ func TestDeleteHandler_Success(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Delete("/customer/:id", handler.DeleteCustomerHandler)
+	app.Delete("/customers/:id", handler.DeleteCustomerHandler)
 
-	req := httptest.NewRequest(http.MethodDelete, "/customer/1", strings.NewReader(reqBody))
+	req := httptest.NewRequest(http.MethodDelete, "/customers/1", strings.NewReader(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -241,9 +241,9 @@ func TestDeleteHandler_Fail(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Delete("/customer/:id", handler.DeleteCustomerHandler)
+	app.Delete("/customers/:id", handler.DeleteCustomerHandler)
 
-	req := httptest.NewRequest(http.MethodDelete, "/customer/1", strings.NewReader(reqBody))
+	req := httptest.NewRequest(http.MethodDelete, "/customers/1", strings.NewReader(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -272,18 +272,17 @@ func TestGetHandler_Success(t *testing.T) {
 
 	handler := NewHandler(crud)
 
-	crud.EXPECT().FindOne(gomock.Any(), 1).Return(&Request{
-		ID:        1,
-		AccountID: 1,
-		Name:      "Test",
-		Age:       26,
+	crud.EXPECT().FindOne(gomock.Any(), 1).Return(&Customers{
+		ID:   1,
+		Name: "Test",
+		Age:  26,
 	}, nil)
 
 	app := fiber.New()
 
-	app.Get("/customer/:id", handler.GetCustomerHandler)
+	app.Get("/customers/:id", handler.GetCustomerHandler)
 
-	req := httptest.NewRequest(http.MethodGet, "/customer/1", strings.NewReader(reqBody))
+	req := httptest.NewRequest(http.MethodGet, "/customers/1", strings.NewReader(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -296,11 +295,10 @@ func TestGetHandler_Success(t *testing.T) {
 		t.Fatalf("failed to read response body: %v", err)
 	}
 
-	expectedResp := Response{StatusCode: fiber.StatusOK, Message: "Get Customer Success", Data: &Request{
-		ID:        1,
-		AccountID: 1,
-		Name:      "Test",
-		Age:       26,
+	expectedResp := Response{StatusCode: fiber.StatusOK, Message: "Get Customer Success", Data: &Customers{
+		ID:   1,
+		Name: "Test",
+		Age:  26,
 	}}
 	var actualResp Response
 	if err := json.Unmarshal(body, &actualResp); err != nil {
@@ -321,9 +319,9 @@ func TestGetHandler_NotFound(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Get("/customer/:id", handler.GetCustomerHandler)
+	app.Get("/customers/:id", handler.GetCustomerHandler)
 
-	req := httptest.NewRequest(http.MethodGet, "/customer/1", strings.NewReader(reqBody))
+	req := httptest.NewRequest(http.MethodGet, "/customers/1", strings.NewReader(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -356,9 +354,9 @@ func TestGetHandler_Error(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Get("/customer/:id", handler.GetCustomerHandler)
+	app.Get("/customers/:id", handler.GetCustomerHandler)
 
-	req := httptest.NewRequest(http.MethodGet, "/customer/1", strings.NewReader(reqBody))
+	req := httptest.NewRequest(http.MethodGet, "/customers/1", strings.NewReader(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)

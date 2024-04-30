@@ -27,15 +27,15 @@ func main() {
 	}()
 
 	var (
-		customerStore = crud.NewCustomerStore(*db.Client)
+		customerStore = crud.NewCustomerStore(db.Client)
 		handler       = crud.NewHandler(customerStore)
 		server        = app.NewServer(conf)
 	)
 	api := server.App
-	api.Post("/customer", handler.CreateCustomerHandler)
-	api.Put("/customer", handler.UpdateCustomerHandler)
-	api.Delete("/customer/:id", handler.DeleteCustomerHandler)
-	api.Get("/customer/:id", handler.GetCustomerHandler)
+	api.Post("/customers", handler.CreateCustomerHandler)
+	api.Put("/customers", handler.UpdateCustomerHandler)
+	api.Delete("/customers/:id", handler.DeleteCustomerHandler)
+	api.Get("/customers/:id", handler.GetCustomerHandler)
 
 	err = server.Start(conf.App.Port)
 	if err != nil {
